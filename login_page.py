@@ -21,15 +21,28 @@ def get_driver():
     return driver
 
 
+def clean_text(text):
+    output = float(text.split(": ")[1])
+    return output
+
+
 def login():
     driver = get_driver()
+
+    #Find and fill in login and password + click
     driver.find_element(By.ID, "id_username").send_keys("automated")
     time.sleep(2)
     driver.find_element(By.ID, "id_password").send_keys("automatedautomated" + Keys.RETURN)
     time.sleep(2)
-    driver.find_element(By.XPATH, "//a[@class='navbar-brand']").click()
-    print(driver.current_url)
 
+    # Go to Home page
+    driver.find_element(By.XPATH, "//a[@class='navbar-brand']").click()
+    time.sleep(3)
+
+    # Find text with temperuture , return clean float value
+    element = driver.find_element(By.ID, "displaytimer")
+    temperature = clean_text(element.text)
+    return temperature
 
 print(login())
 
